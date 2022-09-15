@@ -24,10 +24,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.urok.smartcrow"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "scheme": "smart-crow",
+    "extra": {
+      "eas": {
+        "projectId": "11d1874a-aa57-49c0-b2d6-097c7f34837c"
+      }
     }
   }
 }
