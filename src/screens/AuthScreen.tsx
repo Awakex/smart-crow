@@ -12,7 +12,7 @@ const AuthScreen = () => {
     if (!isLoggedIn)
         return (
             <View style={{ margin: 24 }}>
-                <Button onPress={() => login()} title="Login" />
+                <Button onPress={() => login()} title="Вход" />
             </View>
         );
 

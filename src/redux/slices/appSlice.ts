@@ -1,23 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getUserInfo } from "../thunks/appThunk";
+import { IUserInfo } from "../../types/IUserInfo";
 
 interface IApp {
-  value: string;
+    isAppLoading: boolean;
+    isAppReady: boolean;
+    isUserLoading: boolean;
+    user: IUserInfo | undefined;
 }
 
 const initialState: IApp = {
-  value: "test22",
+    isAppLoading: false,
+    isAppReady: false,
+    isUserLoading: false,
+    user: undefined,
 };
 
 export const appSlice = createSlice({
-  name: "app",
-  initialState,
-  reducers: {
-    updateValue: (state) => {
-      state.value = "working!";
+    name: "app",
+    initialState,
+    reducers: {
+        updateIsAppLoading: (state, action) => {
+            state.isAppLoading = action.payload;
+        },
+        updateIsAppReady: (state, action) => {
+            state.isAppReady = action.payload;
+        },
     },
-  },
+    extraReducers: (builder) => {
+        builder.addCase(getUserInfo.fulfilled, (state, action) => {
+            state.user = action.payload;
+            state.isUserLoading = false;
+        });
+        builder.addCase(getUserInfo.pending, (state) => {
+            state.isUserLoading = true;
+        });
+        builder.addCase(getUserInfo.rejected, (state) => {
+            state.isUserLoading = false;
+            console.log("Ошибка загрузки пользователя");
+        });
+    },
 });
 
-export const { updateValue } = appSlice.actions;
+export const { updateIsAppLoading, updateIsAppReady } = appSlice.actions;
 
 export default appSlice.reducer;

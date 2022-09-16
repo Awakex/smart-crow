@@ -9,9 +9,7 @@ const AcademyScreen = () => {
                 alignItems: "center",
                 justifyContent: "center",
             }}
-        >
-            <DragAndDropZone />
-        </View>
+        ></View>
     );
 };
 
