@@ -9,10 +9,7 @@ interface IProps {
 
 const Tab = ({ content, onPress, isActive }: IProps) => {
     return (
-        <TouchableOpacity
-            style={{ ...styles.tab, backgroundColor: isActive ? "gold" : "silver" }}
-            onPress={onPress}
-        >
+        <TouchableOpacity style={{ ...styles.tab }} onPress={onPress}>
             {content}
         </TouchableOpacity>
     );
@@ -23,8 +20,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         height: 35,
-        minWidth: 90,
-        marginTop: 10,
+        width: 100,
+        backgroundColor: "white",
+        borderRadius: 20,
     },
 });
 

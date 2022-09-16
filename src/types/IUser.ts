@@ -1,8 +1,10 @@
+import { IImage } from "./IImage";
+
 export interface IUser {
-    fileDownloadUri: string;
-    fileName: string;
-    fileType: string;
+    firstName: string;
     id: number;
-    size: number;
-    thumbnailDownloadUri: string;
+    lastName: string;
+    nickName: string;
+    userLogo: IImage;
+    userName: string;
 }

@@ -11,7 +11,7 @@ const Tabs = () => {
     return (
         <View style={styles.container}>
             <Tab
-                content={<CustomText text={"Academy"} />}
+                content={<CustomText text={"Академия"} color={"black"} />}
                 onPress={() => {
                     navigation.navigate("Academy");
                     setActiveTab("Academy");
@@ -19,7 +19,7 @@ const Tabs = () => {
                 isActive={activeTab === "Academy"}
             />
             <Tab
-                content={<CustomText text={"Player"} />}
+                content={<CustomText text={"Меню?"} color={"black"} />}
                 onPress={() => {
                     navigation.navigate("Player");
                     setActiveTab("Player");
@@ -27,7 +27,7 @@ const Tabs = () => {
                 isActive={activeTab === "Player"}
             />
             <Tab
-                content={<CustomText text={"Profile"} />}
+                content={<CustomText text={"Профиль"} color={"black"} />}
                 onPress={() => {
                     navigation.navigate("Profile");
                     setActiveTab("Profile");
@@ -41,11 +41,11 @@ const Tabs = () => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: "space-between",
+        alignItems: "center",
         flexDirection: "row",
         paddingLeft: 20,
         paddingRight: 20,
-        height: 70,
-        backgroundColor: "white",
+        height: 55,
     },
 });
 

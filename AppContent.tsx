@@ -64,8 +64,8 @@ export const AppContent = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <SafeAreaView style={styles.content}>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.content}>
                 <Stack.Navigator
                     initialRouteName="Academy"
                     screenOptions={{
@@ -76,19 +76,21 @@ export const AppContent = () => {
                     <Stack.Screen name="Player" component={PlayerScreen} />
                     <Stack.Screen name="Profile" component={ProfileScreen} />
                 </Stack.Navigator>
-            </SafeAreaView>
+            </View>
 
             <Tabs />
-        </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#33b5e5",
     },
     content: {
         flex: 1,
+        marginTop: 25,
     },
     loader: {
         flex: 1,
