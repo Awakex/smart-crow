@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useKeycloak } from "expo-keycloak-auth";
 import { useAppDispatch, useAppSelector } from "./src/hooks/redux-hooks";
 import { getUserInfo } from "./src/redux/thunks/appThunk";
+import AcademyViewSetsScreen from "./src/screens/AcademyViewSetsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -70,11 +71,13 @@ export const AppContent = () => {
                     initialRouteName="Academy"
                     screenOptions={{
                         headerShown: false,
+                        animation: "fade",
                     }}
                 >
                     <Stack.Screen name="Academy" component={AcademyScreen} />
                     <Stack.Screen name="Player" component={PlayerScreen} />
                     <Stack.Screen name="Profile" component={ProfileScreen} />
+                    <Stack.Screen name="AcademyViewSets" component={AcademyViewSetsScreen} />
                 </Stack.Navigator>
             </View>
 

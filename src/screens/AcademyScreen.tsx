@@ -1,22 +1,21 @@
 import {
-    FlatList,
     ImageBackground,
     SafeAreaView,
     ScrollView,
     StyleSheet,
+    TouchableOpacity,
     View,
 } from "react-native";
 import CustomText from "../entries/CustomText";
 import { ActivityIndicator, Card, SegmentedControl } from "@ant-design/react-native";
 // @ts-ignore
 import Background from "../../assets/images/backgrounds/academy.png";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { getAcademyBlocks } from "../redux/thunks/academyThunk";
-import { useState } from "react";
 import { IAcademyBlock } from "../types/IAcademyBlock";
 
-const AcademyScreen = () => {
+const AcademyScreen = ({ navigation }: any) => {
     const { academyBlocks, isAcademyLoading } = useAppSelector((state) => state.academy);
     const [blocksForShow, setBlocksForShow] = useState<IAcademyBlock[] | undefined>(undefined);
     const dispatch = useAppDispatch();
@@ -78,7 +77,7 @@ const AcademyScreen = () => {
 
                                 <ScrollView style={{ marginTop: 20 }}>
                                     {blocksForShow.map((block) => (
-                                        <View key={block.id} style={{ marginTop: 20 }}>
+                                        <View key={block.id} style={{ marginTop: 5 }}>
                                             <Card>
                                                 <Card.Body>
                                                     <CustomText
@@ -89,6 +88,16 @@ const AcademyScreen = () => {
                                                         text={`Класс: ${block.classTag.name}`}
                                                         color={"black"}
                                                     />
+
+                                                    <TouchableOpacity
+                                                        onPress={() => {
+                                                            navigation.navigate("AcademyViewSets", {
+                                                                blockId: block.id,
+                                                            });
+                                                        }}
+                                                    >
+                                                        <CustomText text={"Перейти"} />
+                                                    </TouchableOpacity>
                                                 </Card.Body>
                                             </Card>
                                         </View>

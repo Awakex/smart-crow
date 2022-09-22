@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 
 interface IProps {
-    text: string;
+    text: string | number;
     fontSize?: number;
     color?: string;
 }
