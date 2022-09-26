@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingLeft: 20,
         paddingRight: 20,
-        height: 55,
+        height: 60,
     },
 });
 

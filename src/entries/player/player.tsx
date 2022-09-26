@@ -3,13 +3,16 @@ import { StyleSheet, View } from "react-native";
 import { ITaskQuestion } from "../../types/ITaskQuestion";
 import { ITaskProperties } from "../../types/ITaskProperties";
 import { TTaskAnswerVariants } from "../../types/TTaskAnswerVariants";
-import CustomText from "../custom-text";
-import Tab from "../tab";
+import { API_URL } from "../../core/url";
+import Question from "./question";
+import QuestionImage from "./question-image";
+import Controllers from "./controllers";
+import Answers from "./answers/answers";
 
 interface IProps {
-    question: ITaskQuestion;
-    properties: ITaskProperties;
-    answers: TTaskAnswerVariants;
+    question?: ITaskQuestion;
+    properties?: ITaskProperties;
+    answers?: TTaskAnswerVariants;
     step: number;
     totalSteps: number;
     setStep: (step: number) => void;
@@ -19,21 +22,21 @@ const Player = ({ properties, question, answers, step, totalSteps, setStep }: IP
     return (
         <View style={styles.player}>
             <View style={styles.content}>
-                <CustomText text={question.title} />
-            </View>
-            <View style={styles.controllers}>
-                <Tab
-                    isActive={step > 0 && totalSteps > 1}
-                    content={<CustomText text={"PREV"} />}
-                    onPress={() => setStep(step - 1)}
+                <Question
+                    text={question?.questionText || "Нет вопроса"}
+                    narrator={properties?.narrator}
                 />
-                <CustomText text={`${step + 1}/${totalSteps}`} />
-                <Tab
-                    isActive={step < totalSteps - 1 && totalSteps > 1}
-                    content={<CustomText text={"NEXT"} />}
-                    onPress={() => setStep(step + 1)}
-                />
+
+                {question?.imageQuestion && (
+                    <QuestionImage
+                        imageURL={API_URL + question.imageQuestion.fileDownloadUri.slice(1)}
+                    />
+                )}
+
+                {answers?.length && <Answers answers={answers} properties={properties} />}
             </View>
+
+            <Controllers step={step} totalSteps={totalSteps} setStep={setStep} />
         </View>
     );
 };
@@ -44,6 +47,7 @@ const styles = StyleSheet.create({
     player: {
         flex: 1,
         position: "relative",
+        backgroundColor: "#97dffc",
     },
     content: {
         flex: 1,
@@ -51,13 +55,5 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         position: "absolute",
-    },
-    controllers: {
-        height: 55,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 20,
-        backgroundColor: "#33b5e5",
     },
 });

@@ -8,7 +8,19 @@ interface IProps {
 }
 
 const CustomText = ({ text, fontSize = 15, color = "black", style }: IProps) => {
-    return <Text style={{ fontFamily: "Nunito-Bold", fontSize, color, ...style }}>{text}</Text>;
+    return (
+        <Text
+            style={{
+                fontFamily: "Nunito-Bold",
+                fontSize,
+                color,
+                textAlignVertical: "center",
+                ...style,
+            }}
+        >
+            {text}
+        </Text>
+    );
 };
 
 export default CustomText;

@@ -70,7 +70,8 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
         }
 
         API.then((response) => {
-            setTasks(response.data);
+            let setForSave = response.data.sort((a, b) => (a.position > b.position && 1) || -1);
+            setTasks(setForSave);
         });
     };
 
@@ -106,24 +107,22 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
             if (taskForSave) {
                 setLoadedTasks((prev) => [...prev, taskForSave]);
                 setCurrentTask(taskForSave);
+            } else {
+                setCurrentTask(undefined);
             }
         });
     };
 
     return (
         <View style={{ flex: 1 }}>
-            {currentTask ? (
-                <Player
-                    question={currentTask.question}
-                    properties={currentTask.properties}
-                    answers={currentTask.answers}
-                    step={step}
-                    setStep={setStep}
-                    totalSteps={tasks?.length || 1}
-                />
-            ) : (
-                <CustomText text={`Нет данных для плеера`} />
-            )}
+            <Player
+                question={currentTask?.question}
+                properties={currentTask?.properties}
+                answers={currentTask?.answers}
+                step={step}
+                setStep={setStep}
+                totalSteps={tasks?.length || 1}
+            />
         </View>
     );
 };
