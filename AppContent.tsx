@@ -3,7 +3,7 @@ import AcademyScreen from "./src/screens/AcademyScreen";
 import PlayerScreen from "./src/screens/PlayerScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import AuthScreen from "./src/screens/AuthScreen";
-import Tabs from "./src/entries/Tabs";
+import Tabs from "./src/entries/tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ActivityIndicator } from "@ant-design/react-native";
 import { useEffect } from "react";
@@ -14,12 +14,13 @@ import { useKeycloak } from "expo-keycloak-auth";
 import { useAppDispatch, useAppSelector } from "./src/hooks/redux-hooks";
 import { getUserInfo } from "./src/redux/thunks/appThunk";
 import AcademyViewSetsScreen from "./src/screens/AcademyViewSetsScreen";
+import AcademyResolveSet from "./src/screens/AcademyResolveSet";
 
 const Stack = createNativeStackNavigator();
 
 export const AppContent = () => {
     const { ready, isLoggedIn, token } = useKeycloak();
-    const { user } = useAppSelector((state) => state.app);
+    const { user, isTabsOpen } = useAppSelector((state) => state.app);
     const dispatch = useAppDispatch();
 
     const saveTokenInStorage = async (token: string) => {
@@ -78,10 +79,11 @@ export const AppContent = () => {
                     <Stack.Screen name="Player" component={PlayerScreen} />
                     <Stack.Screen name="Profile" component={ProfileScreen} />
                     <Stack.Screen name="AcademyViewSets" component={AcademyViewSetsScreen} />
+                    <Stack.Screen name="AcademyResolveSet" component={AcademyResolveSet} />
                 </Stack.Navigator>
             </View>
 
-            <Tabs />
+            {isTabsOpen && <Tabs />}
         </SafeAreaView>
     );
 };

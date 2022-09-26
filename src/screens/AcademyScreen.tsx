@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import CustomText from "../entries/CustomText";
+import CustomText from "../entries/custom-text";
 import { ActivityIndicator, Card, SegmentedControl } from "@ant-design/react-native";
 // @ts-ignore
 import Background from "../../assets/images/backgrounds/academy.png";

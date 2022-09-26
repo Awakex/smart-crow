@@ -1,22 +1,45 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import CustomText from "./CustomText";
-import Tab from "./Tab";
+import { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet } from "react-native";
+import CustomText from "./custom-text";
+import Tab from "./tab";
 
 const Tabs = () => {
     const navigation = useNavigation<any>();
     const [activeTab, setActiveTab] = useState<string>("Academy");
 
+    const appear = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.timing(appear, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
+    }, [appear]);
+
     return (
-        <View style={styles.container}>
+        <Animated.View
+            style={{
+                ...styles.container,
+                opacity: appear,
+                transform: [
+                    {
+                        translateX: appear.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [-500, 0],
+                        }),
+                    },
+                ],
+            }}
+        >
             <Tab
                 content={<CustomText text={"Академия"} color={"black"} />}
                 onPress={() => {
                     navigation.navigate("Academy");
                     setActiveTab("Academy");
                 }}
-                isActive={activeTab === "Academy"}
+                isActive={true}
             />
             <Tab
                 content={<CustomText text={"Меню?"} color={"black"} />}
@@ -24,7 +47,7 @@ const Tabs = () => {
                     navigation.navigate("Player");
                     setActiveTab("Player");
                 }}
-                isActive={activeTab === "Player"}
+                isActive={true}
             />
             <Tab
                 content={<CustomText text={"Профиль"} color={"black"} />}
@@ -32,9 +55,9 @@ const Tabs = () => {
                     navigation.navigate("Profile");
                     setActiveTab("Profile");
                 }}
-                isActive={activeTab === "Profile"}
+                isActive={true}
             />
-        </View>
+        </Animated.View>
     );
 };
 

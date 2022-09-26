@@ -9,7 +9,11 @@ interface IProps {
 
 const Tab = ({ content, onPress, isActive }: IProps) => {
     return (
-        <TouchableOpacity style={{ ...styles.tab }} onPress={onPress}>
+        <TouchableOpacity
+            style={{ ...styles.tab, backgroundColor: isActive ? "white" : "lightgrey" }}
+            onPress={onPress}
+            disabled={!isActive}
+        >
             {content}
         </TouchableOpacity>
     );

@@ -7,6 +7,7 @@ interface IApp {
     isAppReady: boolean;
     isUserLoading: boolean;
     user: IUserInfo | undefined;
+    isTabsOpen: boolean;
 }
 
 const initialState: IApp = {
@@ -14,6 +15,7 @@ const initialState: IApp = {
     isAppReady: false,
     isUserLoading: false,
     user: undefined,
+    isTabsOpen: true,
 };
 
 export const appSlice = createSlice({
@@ -25,6 +27,9 @@ export const appSlice = createSlice({
         },
         updateIsAppReady: (state, action) => {
             state.isAppReady = action.payload;
+        },
+        updateIsTabsOpen: (state, action) => {
+            state.isTabsOpen = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -42,6 +47,6 @@ export const appSlice = createSlice({
     },
 });
 
-export const { updateIsAppLoading, updateIsAppReady } = appSlice.actions;
+export const { updateIsAppLoading, updateIsAppReady, updateIsTabsOpen } = appSlice.actions;
 
 export default appSlice.reducer;

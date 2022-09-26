@@ -2,6 +2,7 @@ import { Request } from "../request";
 import { IAcademyBlock } from "../../types/IAcademyBlock";
 import { IPageable } from "../../types/IPageable";
 import { IAcademySet } from "../../types/IAcademySet";
+import { IAcademyQuestion } from "../../types/IAcademyQuestion";
 
 export const AcademyAPI = {
     getAcademyBlocks: () => {
@@ -11,5 +12,8 @@ export const AcademyAPI = {
         return Request.get<IPageable<IAcademySet[]>>(
             `academy-block/${blockId}/academy-set?page=${page}&size=10`
         );
+    },
+    getAcademyQuestions: (setId: number) => {
+        return Request.get<IAcademyQuestion[]>(`academy-set/${setId}/academy-question`);
     },
 };

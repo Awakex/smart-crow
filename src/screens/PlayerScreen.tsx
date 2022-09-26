@@ -1,5 +1,7 @@
 import { View } from "react-native";
-import CustomText from "../entries/CustomText";
+import CustomText from "../entries/custom-text";
+
+interface IProps {}
 
 const PlayerScreen = () => {
     return (

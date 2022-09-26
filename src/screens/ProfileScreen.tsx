@@ -1,5 +1,5 @@
 import { Button, View } from "react-native";
-import CustomText from "../entries/CustomText";
+import CustomText from "../entries/custom-text";
 import { useAppSelector } from "../hooks/redux-hooks";
 // @ts-ignore
 import { useKeycloak } from "expo-keycloak-auth";

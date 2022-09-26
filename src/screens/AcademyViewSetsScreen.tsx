@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
-import CustomText from "../entries/CustomText";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import CustomText from "../entries/custom-text";
 import { AcademyAPI } from "../core/api/academy";
 import { IPageable } from "../types/IPageable";
 import { IAcademySet } from "../types/IAcademySet";
 
 interface IProps {
     route: any;
+    navigation: any;
 }
 
-const AcademyViewSetsScreen = ({ route }: IProps) => {
+const AcademyViewSetsScreen = ({ route, navigation }: IProps) => {
     const { blockId } = route.params;
     const [academySets, setAcademySets] = useState<IPageable<IAcademySet[]> | null>(null);
     const [page, setPage] = useState(1);
@@ -41,6 +42,15 @@ const AcademyViewSetsScreen = ({ route }: IProps) => {
                 }}
             >
                 <CustomText text={`${item.name} ${item.id}`} />
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate("AcademyResolveSet", {
+                            setId: item.id,
+                        });
+                    }}
+                >
+                    <CustomText text={"Перейти"} />
+                </TouchableOpacity>
             </View>
         );
     };
