@@ -10,6 +10,7 @@ import { QuestionAPI } from "../../core/api/question";
 import { ETaskType } from "../../types/ETaskType";
 import { useAppDispatch } from "../../hooks/redux-hooks";
 import { updateIsTabsOpen } from "../../redux/slices/appSlice";
+import { PlayerAPI } from "../../core/api/player";
 
 interface IProps {
     setId?: number;
@@ -23,6 +24,7 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
     const [tasks, setTasks] = useState<IAcademyQuestion[] | undefined>(undefined);
     const [loadedTasks, setLoadedTasks] = useState<ITask[] | []>([]);
     const [step, setStep] = useState(0);
+    const [selectedAnswers, setSelectedAnswers] = useState<undefined | number[]>(undefined);
 
     useEffect(() => {
         dispatch(updateIsTabsOpen(false));
@@ -39,6 +41,8 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
     }, [taskId, setId]);
 
     useEffect(() => {
+        setSelectedAnswers(undefined);
+
         if (!tasks) {
             setCurrentTask(undefined);
             setStep(0);
@@ -50,6 +54,42 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
             getTask(task.question.id, task.question.objectType);
         }
     }, [tasks, step]);
+
+    const handleSelectAnswer = (id: number) => {
+        if (selectedAnswers?.includes(id)) {
+            setSelectedAnswers((prev) => prev?.filter((answer) => answer !== id));
+        } else {
+            setSelectedAnswers((prev) => [...(prev || []), id]);
+        }
+    };
+
+    const handleCheckAnswer = () => {
+        if (!currentTask) {
+            return;
+        }
+
+        let prefixTask = "";
+        let suffixMode = "";
+        let questionType: ETaskType = currentTask.question.objectType;
+
+        switch (questionType) {
+            case ETaskType.ClassicTestDto:
+                prefixTask = "classic-test";
+                break;
+        }
+
+        switch (mode) {
+            case EPlayerMode.ACADEMY:
+                suffixMode = "submit-answers-academy";
+                break;
+        }
+
+        if (prefixTask && suffixMode && selectedAnswers) {
+            PlayerAPI.checkAnswers(prefixTask, suffixMode, currentTask.question.id, selectedAnswers)
+                .then((response) => console.log(response))
+                .catch(() => console.log("error check answers"));
+        }
+    };
 
     const loadSet = () => {
         if (!setId) {
@@ -122,6 +162,9 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
                 step={step}
                 setStep={setStep}
                 totalSteps={tasks?.length || 1}
+                handleSelectAnswer={handleSelectAnswer}
+                selectedAnswers={selectedAnswers}
+                handleCheckAnswer={handleCheckAnswer}
             />
         </View>
     );

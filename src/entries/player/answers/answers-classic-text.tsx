@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TTaskAnswerVariants } from "../../../types/TTaskAnswerVariants";
 import { ITaskAnswerClassicText } from "../../../types/ITaskAnswerClassicText";
 import CustomText from "../../custom-text";
@@ -7,9 +7,11 @@ import CustomText from "../../custom-text";
 interface IProps {
     answers: ITaskAnswerClassicText[];
     isShort: boolean;
+    selectedAnswers?: number[];
+    handleSelectAnswer: (answerId: number) => void;
 }
 
-const AnswersClassicText = ({ answers, isShort }: IProps) => {
+const AnswersClassicText = ({ answers, isShort, handleSelectAnswer, selectedAnswers }: IProps) => {
     return (
         <View
             style={{
@@ -20,15 +22,17 @@ const AnswersClassicText = ({ answers, isShort }: IProps) => {
             }}
         >
             {answers.map((answer) => (
-                <View
+                <TouchableOpacity
                     key={answer.id}
                     style={{
                         ...styles.answer,
                         width: isShort ? "48%" : "100%",
+                        borderWidth: selectedAnswers?.includes(answer.id) ? 1 : 0,
                     }}
+                    onPress={() => handleSelectAnswer(answer.id)}
                 >
                     <CustomText text={answer.text} style={styles.text} />
-                </View>
+                </TouchableOpacity>
             ))}
         </View>
     );
@@ -51,6 +55,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 10,
         padding: 10,
+        borderColor: "#3fd200",
     },
     text: {
         textAlign: "center",

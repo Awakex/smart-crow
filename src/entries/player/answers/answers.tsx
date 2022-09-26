@@ -10,9 +10,11 @@ import { ITaskProperties } from "../../../types/ITaskProperties";
 interface IProps {
     answers?: TTaskAnswerVariants;
     properties?: ITaskProperties;
+    selectedAnswers?: number[];
+    handleSelectAnswer: (answerId: number) => void;
 }
 
-const Answers = ({ answers, properties }: IProps) => {
+const Answers = ({ answers, properties, handleSelectAnswer, selectedAnswers }: IProps) => {
     const renderAnswers = () => {
         if (!answers) {
             return <CustomText text={"No answers..."} />;
@@ -24,6 +26,8 @@ const Answers = ({ answers, properties }: IProps) => {
                     <AnswersClassicText
                         answers={answers as ITaskAnswerClassicText[]}
                         isShort={!!properties?.isShortContainer}
+                        selectedAnswers={selectedAnswers}
+                        handleSelectAnswer={handleSelectAnswer}
                     />
                 );
                 break;

@@ -15,10 +15,23 @@ interface IProps {
     answers?: TTaskAnswerVariants;
     step: number;
     totalSteps: number;
+    selectedAnswers?: number[];
     setStep: (step: number) => void;
+    handleSelectAnswer: (answerId: number) => void;
+    handleCheckAnswer: () => void;
 }
 
-const Player = ({ properties, question, answers, step, totalSteps, setStep }: IProps) => {
+const Player = ({
+    properties,
+    question,
+    answers,
+    step,
+    totalSteps,
+    setStep,
+    handleSelectAnswer,
+    selectedAnswers,
+    handleCheckAnswer,
+}: IProps) => {
     return (
         <View style={styles.player}>
             <View style={styles.content}>
@@ -33,10 +46,23 @@ const Player = ({ properties, question, answers, step, totalSteps, setStep }: IP
                     />
                 )}
 
-                {answers?.length && <Answers answers={answers} properties={properties} />}
+                {answers?.length && (
+                    <Answers
+                        answers={answers}
+                        properties={properties}
+                        selectedAnswers={selectedAnswers}
+                        handleSelectAnswer={handleSelectAnswer}
+                    />
+                )}
             </View>
 
-            <Controllers step={step} totalSteps={totalSteps} setStep={setStep} />
+            <Controllers
+                step={step}
+                totalSteps={totalSteps}
+                setStep={setStep}
+                isAnswerButtonEnabled={!!selectedAnswers?.length}
+                handleCheckAnswer={handleCheckAnswer}
+            />
         </View>
     );
 };

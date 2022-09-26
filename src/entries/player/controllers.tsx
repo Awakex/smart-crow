@@ -8,20 +8,34 @@ interface IProps {
     step: number;
     totalSteps: number;
     setStep: (step: number) => void;
+    isAnswerButtonEnabled: boolean;
+    handleCheckAnswer: () => void;
 }
 
-const Controllers = ({ step, totalSteps, setStep }: IProps) => {
+const Controllers = ({
+    step,
+    totalSteps,
+    setStep,
+    isAnswerButtonEnabled,
+    handleCheckAnswer,
+}: IProps) => {
     const navigation = useNavigation();
 
     return (
         <View style={styles.controllers}>
             <View style={styles.mainControllers}>
                 <TouchableOpacity
-                    style={styles.answerButton}
-                    onPress={() => console.log("asd")}
-                    disabled={false}
+                    style={{
+                        ...styles.answerButton,
+                        backgroundColor: isAnswerButtonEnabled ? "#3fd200" : "lightgrey",
+                    }}
+                    onPress={handleCheckAnswer}
+                    disabled={!isAnswerButtonEnabled}
                 >
-                    <CustomText text={"Ответить"} />
+                    <CustomText
+                        text={"Ответить"}
+                        color={isAnswerButtonEnabled ? "white" : "black"}
+                    />
                 </TouchableOpacity>
             </View>
 
@@ -34,8 +48,8 @@ const Controllers = ({ step, totalSteps, setStep }: IProps) => {
                 />
                 <View style={styles.secondaryControllersCenter}>
                     <CustomText text={`${step + 1}/${totalSteps}`} style={styles.steps} />
-                    <TouchableOpacity onPress={() => navigation.goBack()} disabled={false}>
-                        <CustomText text={"X"} style={styles.exitButton} />
+                    <TouchableOpacity style={styles.exitButton} onPress={() => navigation.goBack()}>
+                        <CustomText text={"Exit"} style={styles.exitButton} />
                     </TouchableOpacity>
                 </View>
 
@@ -77,15 +91,20 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        borderWidth: 1,
+        borderColor: "white",
+        width: "28%",
+        borderRadius: 20,
+        height: 25,
     },
     tab: {
         height: 25,
+        width: "28%",
     },
     steps: {
         textAlignVertical: "center",
     },
     answerButton: {
-        backgroundColor: "lightgreen",
         width: 150,
         height: 40,
         alignItems: "center",

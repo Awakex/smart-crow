@@ -15,12 +15,16 @@ import { useAppDispatch, useAppSelector } from "./src/hooks/redux-hooks";
 import { getUserInfo } from "./src/redux/thunks/appThunk";
 import AcademyViewSetsScreen from "./src/screens/AcademyViewSetsScreen";
 import AcademyResolveSet from "./src/screens/AcademyResolveSet";
+import { NotificationWrapper } from "./src/entries/notifications/notification-wrapper";
+import CustomText from "./src/entries/custom-text";
+import { NotificationTaskResolve } from "./src/entries/notifications/content/notification-task-resolve";
 
 const Stack = createNativeStackNavigator();
 
 export const AppContent = () => {
     const { ready, isLoggedIn, token } = useKeycloak();
     const { user, isTabsOpen } = useAppSelector((state) => state.app);
+    const { activeNotification } = useAppSelector((state) => state.notifications);
     const dispatch = useAppDispatch();
 
     const saveTokenInStorage = async (token: string) => {
@@ -84,6 +88,12 @@ export const AppContent = () => {
             </View>
 
             {isTabsOpen && <Tabs />}
+
+            {activeNotification && (
+                <NotificationWrapper>
+                    <NotificationTaskResolve />
+                </NotificationWrapper>
+            )}
         </SafeAreaView>
     );
 };
@@ -92,6 +102,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#33b5e5",
+        position: "relative",
     },
     content: {
         flex: 1,
