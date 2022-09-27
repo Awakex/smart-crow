@@ -8,6 +8,7 @@ import Question from "./question";
 import QuestionImage from "./question-image";
 import Controllers from "./controllers";
 import Answers from "./answers/answers";
+import { NotificationWrapper } from "../notifications/notification-wrapper";
 
 interface IProps {
     question?: ITaskQuestion;
@@ -19,6 +20,7 @@ interface IProps {
     setStep: (step: number) => void;
     handleSelectAnswer: (answerId: number) => void;
     handleCheckAnswer: () => void;
+    activeNotification: React.ReactNode;
 }
 
 const Player = ({
@@ -31,39 +33,44 @@ const Player = ({
     handleSelectAnswer,
     selectedAnswers,
     handleCheckAnswer,
+    activeNotification,
 }: IProps) => {
     return (
-        <View style={styles.player}>
-            <View style={styles.content}>
-                <Question
-                    text={question?.questionText || "Нет вопроса"}
-                    narrator={properties?.narrator}
+        <React.Fragment>
+            <View style={styles.player}>
+                <View style={styles.content}>
+                    <Question
+                        text={question?.questionText || "Нет вопроса"}
+                        narrator={properties?.narrator}
+                    />
+
+                    {question?.imageQuestion && (
+                        <QuestionImage
+                            imageURL={API_URL + question.imageQuestion.fileDownloadUri.slice(1)}
+                        />
+                    )}
+
+                    {answers?.length && (
+                        <Answers
+                            answers={answers}
+                            properties={properties}
+                            selectedAnswers={selectedAnswers}
+                            handleSelectAnswer={handleSelectAnswer}
+                        />
+                    )}
+                </View>
+
+                <Controllers
+                    step={step}
+                    totalSteps={totalSteps}
+                    setStep={setStep}
+                    isAnswerButtonEnabled={!!selectedAnswers?.length}
+                    handleCheckAnswer={handleCheckAnswer}
                 />
-
-                {question?.imageQuestion && (
-                    <QuestionImage
-                        imageURL={API_URL + question.imageQuestion.fileDownloadUri.slice(1)}
-                    />
-                )}
-
-                {answers?.length && (
-                    <Answers
-                        answers={answers}
-                        properties={properties}
-                        selectedAnswers={selectedAnswers}
-                        handleSelectAnswer={handleSelectAnswer}
-                    />
-                )}
             </View>
 
-            <Controllers
-                step={step}
-                totalSteps={totalSteps}
-                setStep={setStep}
-                isAnswerButtonEnabled={!!selectedAnswers?.length}
-                handleCheckAnswer={handleCheckAnswer}
-            />
-        </View>
+            <NotificationWrapper>{activeNotification}</NotificationWrapper>
+        </React.Fragment>
     );
 };
 

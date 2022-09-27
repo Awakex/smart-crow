@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import Player from "./player";
 import { ITask } from "../../types/ITask";
-import CustomText from "../custom-text";
 import { EPlayerMode } from "../../types/EPlayerMode";
 import { AcademyAPI } from "../../core/api/academy";
 import { IAcademyQuestion } from "../../types/IAcademyQuestion";
@@ -11,6 +10,8 @@ import { ETaskType } from "../../types/ETaskType";
 import { useAppDispatch } from "../../hooks/redux-hooks";
 import { updateIsTabsOpen } from "../../redux/slices/appSlice";
 import { PlayerAPI } from "../../core/api/player";
+import useNotificationQueue from "../../hooks/useNotificationQueue";
+import { NotificationTaskResolve } from "../notifications/content/notification-task-resolve";
 
 interface IProps {
     setId?: number;
@@ -25,6 +26,8 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
     const [loadedTasks, setLoadedTasks] = useState<ITask[] | []>([]);
     const [step, setStep] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState<undefined | number[]>(undefined);
+    const { activeNotification, removeNotificationFromQueue, addNotificationInQueue } =
+        useNotificationQueue();
 
     useEffect(() => {
         dispatch(updateIsTabsOpen(false));
@@ -63,6 +66,16 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
         }
     };
 
+    const handleNextQuestion = () => {
+        if (!tasks) {
+            return;
+        }
+
+        if (step < tasks.length - 1) {
+            setStep((prev) => prev + 1);
+        }
+    };
+
     const handleCheckAnswer = () => {
         if (!currentTask) {
             return;
@@ -86,8 +99,20 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
 
         if (prefixTask && suffixMode && selectedAnswers) {
             PlayerAPI.checkAnswers(prefixTask, suffixMode, currentTask.question.id, selectedAnswers)
-                .then((response) => console.log(response))
-                .catch(() => console.log("error check answers"));
+                .then((response) => {
+                    addNotificationInQueue(
+                        5,
+                        <NotificationTaskResolve
+                            key="task-resolve"
+                            isCorrect={response.data}
+                            handleNext={() => {
+                                removeNotificationFromQueue(null, "task-resolve");
+                                handleNextQuestion();
+                            }}
+                        />
+                    );
+                })
+                .catch((e) => console.log("error check answers", e));
         }
     };
 
@@ -165,6 +190,7 @@ const PlayerContainer = ({ taskId, setId, mode }: IProps) => {
                 handleSelectAnswer={handleSelectAnswer}
                 selectedAnswers={selectedAnswers}
                 handleCheckAnswer={handleCheckAnswer}
+                activeNotification={activeNotification}
             />
         </View>
     );

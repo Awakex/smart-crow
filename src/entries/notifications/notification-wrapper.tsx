@@ -6,11 +6,17 @@ interface IProps {
 }
 
 export const NotificationWrapper = ({ children }: IProps) => {
+    if (!children) {
+        return null;
+    }
     return <View style={styles.wrapper}>{children}</View>;
 };
+
 const styles = StyleSheet.create({
     wrapper: {
         position: "absolute",
+        justifyContent: "center",
+        alignItems: "center",
         left: 0,
         top: 0,
         right: 0,

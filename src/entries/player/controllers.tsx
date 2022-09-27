@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Tab from "../tab";
 import CustomText from "../custom-text";
 import { useNavigation } from "@react-navigation/native";
+import CustomButton from "../custom-button";
 
 interface IProps {
     step: number;
@@ -24,19 +25,7 @@ const Controllers = ({
     return (
         <View style={styles.controllers}>
             <View style={styles.mainControllers}>
-                <TouchableOpacity
-                    style={{
-                        ...styles.answerButton,
-                        backgroundColor: isAnswerButtonEnabled ? "#3fd200" : "lightgrey",
-                    }}
-                    onPress={handleCheckAnswer}
-                    disabled={!isAnswerButtonEnabled}
-                >
-                    <CustomText
-                        text={"Ответить"}
-                        color={isAnswerButtonEnabled ? "white" : "black"}
-                    />
-                </TouchableOpacity>
+                <CustomButton disabled={!isAnswerButtonEnabled} handleClick={handleCheckAnswer} />
             </View>
 
             <View style={styles.secondaryControllers}>
@@ -103,13 +92,6 @@ const styles = StyleSheet.create({
     },
     steps: {
         textAlignVertical: "center",
-    },
-    answerButton: {
-        width: 150,
-        height: 40,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 8,
     },
     exitButton: {
         height: 20,
